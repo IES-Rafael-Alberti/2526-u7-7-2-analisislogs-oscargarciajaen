@@ -19,19 +19,18 @@ class ConsoleInput {
             return fechaInicial
         }
 
-        fun solicitarFechaTerminal(): String{
+        fun solicitarFechaTerminal(fechaInicial: String): String{
             val regex = """^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])\\s([01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d$""".toRegex()
 
             var fechaTerminal: String? = null
 
             do {
-                println("Introduce la fecha inicial en formato 2025-01-15 10:30:15 ")
+                println("Introduce la fecha terminal en formato 2025-01-15 10:30:15 ")
                 val entrada = readLine()
                 if (entrada != null && entrada.matches(regex)){
-                    if (){
+                    if (fechaInicial < entrada){
                         fechaTerminal = entrada
-                    }
-
+                    } else { println("La fecha terminal debe ser mayor a la fecha inicial") }
                 }
             } while (fechaTerminal == null)
             return fechaTerminal
