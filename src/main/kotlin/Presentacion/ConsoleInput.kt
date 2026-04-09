@@ -56,6 +56,9 @@ class ConsoleInput {
             return decision
         }
 
+        fun mostrarAnalisis(lineasProcesadas: Int, info: Int, error: Int, warning: Int, primeraEntrada: String, ultimaEntrada: String) {
+            println("")
+        }
     }
 
 }

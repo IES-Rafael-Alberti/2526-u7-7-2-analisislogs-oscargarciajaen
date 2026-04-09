@@ -1,5 +1,6 @@
 package org.iesra.Dominio
 
+import org.iesra.Presentacion.ConsoleInput
 import kotlin.math.log
 
 class ProcesadorDeLogs() {
@@ -27,8 +28,54 @@ class ProcesadorDeLogs() {
         return logsFiltrados
     }
 
+    fun contarInfo(): Int{
+        var contadorInfo = 0
+        for (log in logs){
+            if (log.contains("INFO")){
+                contadorInfo++
+            }
+        }
+        return contadorInfo
+    }
+
+    fun contarError(): Int{
+        var contadorError = 0
+        for (log in logs){
+            if (log.contains("ERROR")){
+                contadorError++
+            }
+        }
+        return contadorError
+    }
+
+    fun contarWarning(): Int{
+        var contadorWarning = 0
+        for (log in logs){
+            if (log.contains("WARNING")){
+                contadorWarning++
+            }
+        }
+        return contadorWarning
+    }
+
+    fun obtenerPrimeraEntrada(): String {
+        val primeraEntrada = logs.first().substringAfter("[").substringBefore("]")
+        return primeraEntrada
+    }
+
+    fun obtenerUltimaEntrada(): String {
+        val ulimaEntrada = logs.last().substringAfter("[").substringBefore("]")
+        return ulimaEntrada
+    }
+
     fun generarAnalisis(){
-        // Todo generardor analisis
+        val entradas = contadorEntradas()
+        val info = contarInfo()
+        val errores = contarError()
+        val warnings = contarWarning()
+        val primeraEntrada = obtenerPrimeraEntrada()
+        val ultimaEntrdada = obtenerUltimaEntrada()
+        ConsoleInput.mostrarAnalisis(entradas, info, errores, warnings, primeraEntrada, ultimaEntrdada)
     }
 
 }
