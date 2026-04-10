@@ -1,9 +1,11 @@
 package org.iesra.Dominio
 
-import org.iesra.Presentacion.ConsoleInput
-import kotlin.math.log
+import org.iesra.Presentacion.Consola
+import java.time.LocalDateTime
 
 class ProcesadorDeLogs() {
+
+    val consola = Consola()
 
     val logs = FileManager.logs
 
@@ -15,14 +17,34 @@ class ProcesadorDeLogs() {
         return entradas
     }
 
-    fun filtrarPorFecha(desde: String, hasta: String): MutableList<String>{
-
-        val logsFiltrados = mutableListOf<String>()
-
-        for (log in logs){
-            val horaLog = log.substringAfter("[").substringBefore("]")
-            if (horaLog >= desde && horaLog <= hasta ){
-                logsFiltrados.add(log)
+    fun filtrarPorFecha(desde: LocalDateTime?, hasta: LocalDateTime?): MutableList<String>{
+        val logsFiltrados: MutableList<String> = mutableListOf()
+        if (desde != null && hasta != null && desde.isBefore(hasta)){
+            for (log in logs){
+                val logDividido = log.split("]")
+                val fechaLog = logDividido[0].replace("[", "")
+                val fechaYHora = LocalDateTime.parse(fechaLog)
+                if (desde <= fechaYHora && fechaYHora <= hasta){
+                    logsFiltrados.add(log)
+                }
+            }
+        } else if (desde == null && hasta != null){
+            for (log in logs){
+                val logDividido = log.split("]")
+                val fechaLog = logDividido[0].replace("[", "")
+                val fechaYHora = LocalDateTime.parse(fechaLog)
+                if (fechaYHora <= hasta){
+                    logsFiltrados.add(log)
+                }
+            }
+        } else if (desde != null && hasta == null){
+            for (log in logs){
+                val logDividido = log.split("]")
+                val fechaLog = logDividido[0].replace("[", "")
+                val fechaYHora = LocalDateTime.parse(fechaLog)
+                if (desde <= fechaYHora){
+                    logsFiltrados.add(log)
+                }
             }
         }
         return logsFiltrados
@@ -75,7 +97,7 @@ class ProcesadorDeLogs() {
         val warnings = contarWarning()
         val primeraEntrada = obtenerPrimeraEntrada()
         val ultimaEntrdada = obtenerUltimaEntrada()
-        ConsoleInput.mostrarAnalisis(entradas, info, errores, warnings, primeraEntrada, ultimaEntrdada)
+        consola.mostrarAnalisis(entradas, info, errores, warnings, primeraEntrada, ultimaEntrdada)
     }
 
     fun filtrarPorNivel(listaNiveles: MutableList<String>):MutableList<String>{

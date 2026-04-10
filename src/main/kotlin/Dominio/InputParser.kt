@@ -6,9 +6,7 @@ import kotlin.*
 
 object InputParser {
 
-    val consola: Consola = Consola
-
-    val procesador = ProcesadorDeLogs()
+    val consola: Consola = Consola()
 
     fun procesarEntrada(args: Array<String>):ConfigEjecucion {
         var i = 0

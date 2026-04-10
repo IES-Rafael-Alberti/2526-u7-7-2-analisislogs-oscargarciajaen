@@ -1,6 +1,6 @@
 package org.iesra.Presentacion
 
-object Consola {
+class Consola {
 
 
     fun mostrarAnalisis(lineasProcesadas: Int, info: Int, error: Int, warning: Int, primeraEntrada: String, ultimaEntrada: String) {
