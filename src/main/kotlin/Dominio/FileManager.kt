@@ -3,9 +3,8 @@ package org.iesra.Dominio
 import java.io.File
 import java.io.FileNotFoundException
 
-class FileManager() {
+object FileManager {
 
-    companion object {
         val logs = mutableListOf<String>()
 
         fun ObtenerLogs(ruta: String): Boolean {
@@ -21,5 +20,4 @@ class FileManager() {
             }
             return logsVolcados
         }
-    }
 }

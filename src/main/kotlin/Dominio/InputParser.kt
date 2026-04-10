@@ -1,0 +1,115 @@
+package org.iesra.Dominio
+import org.iesra.Datos.ConfigEjecucion
+import org.iesra.Presentacion.Consola
+import java.time.LocalDateTime
+import kotlin.*
+
+object InputParser {
+
+    val consola: Consola = Consola
+
+    val procesador = ProcesadorDeLogs()
+
+    fun procesarEntrada(args: Array<String>):ConfigEjecucion {
+        var i = 0
+
+        var conf: ConfigEjecucion = ConfigEjecucion()
+
+        while (i < args.size){
+            when(args[i]){
+                "-i" , "--input"  -> {
+                    validarImput(args)
+                    i++
+                }
+                "-f", "--from" -> {
+                    conf.dateFrom = validarFrom(args[i+1])
+                    i++
+                }
+                "-t", "--to" -> {
+                    conf.dateTo =  validarTo(args[i+1])
+                    i++
+                }
+                "-l", "--level" -> {
+                    conf.levels = validarNiveles(args[i+1])
+                    i++
+                }
+                "-s", "--stats" -> {
+                    conf.stats = true
+                }
+                "-r", "--report" -> {
+                    conf.report = true
+                }
+                "-o", "--output" -> {
+                    if (i +1 < args.size) {
+                        conf.output = args[i+1]
+                        i++
+                    }
+                }
+                "-p", "--stdout" -> {
+                    conf.mostrarConsola = true
+                }
+                "--ignore-invalid" -> {
+                    conf.ingnoreInvalid = true
+                }
+                "-h", "--help" -> {
+                    consola.mostrarAyuda()
+                }
+            }
+            i++
+        }
+
+        return conf
+
+    }
+
+    fun validarImput(args: Array<String>): Boolean{
+        var valido = false
+        if(args.size == 2){
+            valido = true
+            FileManager.ObtenerLogs(args[1])
+        }
+        return valido
+    }
+
+    fun validarFrom(fecha: String): LocalDateTime{
+        val regex = """^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])\\s([01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d$""".toRegex()
+        val fechaFormateada = fecha.replace("\"", "")
+        if (fechaFormateada.matches(regex)){
+            val fechaValidada = LocalDateTime.parse(fechaFormateada)
+            return fechaValidada
+        } else {
+            throw IllegalArgumentException("-f, --from <fechaHora>         Formato: \"YYYY-MM-DD HH:MM:SS")
+        }
+    }
+
+    fun validarTo(fecha: String): LocalDateTime{
+        val regex = """^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])\\s([01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d$""".toRegex()
+        val fechaFormateada = fecha.replace("\"", "")
+        if (fechaFormateada.matches(regex)){
+            val fechaValidada = LocalDateTime.parse(fechaFormateada)
+            return fechaValidada
+        } else {
+            throw IllegalArgumentException("-t, --to <fechaHora>         Formato: \"YYYY-MM-DD HH:MM:SS")
+        }
+    }
+
+    fun validarNiveles(niveles: String):MutableList<String>{
+        val nivelesList = mutableListOf<String>()
+        if (niveles.contains(",")){
+            val nivelesEncontrados = niveles.split(",")
+            for (nivel in nivelesEncontrados){
+                if (nivel in listOf("INFO", "WARNING", "ERROR")){
+                    nivelesList.add(nivel)
+                }
+            }
+        } else {
+            if (niveles in listOf("INFO", "WARNING", "ERROR")) {
+                nivelesList.add(niveles)
+            } else {
+                throw IllegalArgumentException("niveles invalidos")
+            }
+        }
+        return nivelesList
+    }
+
+}

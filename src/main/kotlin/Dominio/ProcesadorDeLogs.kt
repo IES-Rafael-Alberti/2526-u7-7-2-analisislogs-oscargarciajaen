@@ -78,4 +78,17 @@ class ProcesadorDeLogs() {
         ConsoleInput.mostrarAnalisis(entradas, info, errores, warnings, primeraEntrada, ultimaEntrdada)
     }
 
+    fun filtrarPorNivel(listaNiveles: MutableList<String>):MutableList<String>{
+        val logsFiltradosPorNivel = mutableListOf<String>()
+        for (i in logs){
+            val log = i.split(" ")
+            if (log[2] in listaNiveles){
+                logsFiltradosPorNivel.add(i)
+            }
+        }
+        return logsFiltradosPorNivel
+    }
+
+
+
 }
