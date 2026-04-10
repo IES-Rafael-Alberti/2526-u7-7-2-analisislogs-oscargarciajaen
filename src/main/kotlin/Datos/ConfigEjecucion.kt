@@ -10,6 +10,5 @@ data class ConfigEjecucion(
     var stats: Boolean? = null,
     var output: String? = null,
     var mostrarConsola: Boolean? = null,
-    var ingnoreInvalid : Boolean? = null
 )
 

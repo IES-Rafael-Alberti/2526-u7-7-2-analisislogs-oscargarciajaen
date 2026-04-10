@@ -1,10 +1,31 @@
 package org.iesra.Presentacion
 
+import org.iesra.Dominio.ProcesadorDeLogs
+
 class Consola {
 
+    val procesadorLogs = ProcesadorDeLogs()
 
-    fun mostrarAnalisis(lineasProcesadas: Int, info: Int, error: Int, warning: Int, primeraEntrada: String, ultimaEntrada: String) {
-        println("")
+
+    fun mostrarAnalisis() {
+        println("INFORME DE LOGS")
+        println("===============\n")
+        println("RangoAplicado -> " + procesadorLogs.informeLog["primerLog"] + "-" + procesadorLogs.informeLog["ultimoLog"])
+        println("Niveles incluidos -> " + procesadorLogs.informeLog["nivelesIncluidos"])
+        println("Lineas procesadas -> " + procesadorLogs.informeLog["lineasProcesadas"])
+        println("INFO -> " + procesadorLogs.informeLog["INFO"])
+        println("WARNING -> " + procesadorLogs.informeLog["WARNING"])
+        println("ERROR -> " + procesadorLogs.informeLog["ERROR"])
+
+    }
+
+    fun mostrarStats() {
+        println("INFORME DE STATS")
+        println("===============\n")
+        println("Lineas procesadas -> " + procesadorLogs.informeLog["lineasProcesadas"])
+        println("INFO -> " + procesadorLogs.informeLog["INFO"])
+        println("WARNING -> " + procesadorLogs.informeLog["WARNING"])
+        println("ERROR -> " + procesadorLogs.informeLog["ERROR"])
     }
 
     fun mostrarAyuda() {
@@ -17,7 +38,19 @@ class Consola {
         println("-r, --report                 Genera informe completo")
         println("-o, --output <fichero>       Guarda la salida en un fichero")
         println("-p, --stdout                 Muestra la salida por consola")
-        println("--ignore-invalid         Ignora líneas inválidas y continúa")
         println("-h, --help                   Muestra esta ayuda")
+    }
+
+    fun mostrarLogsFiltradosPorNivel(logsFiltradosPorNivel: MutableList<String>) {
+        logsFiltradosPorNivel.forEach {
+            println(it)
+        }
+    }
+
+    fun mostrarLogsFiltradosPorFecha(logsFiltradosPorFecha: MutableList<String>) {
+        logsFiltradosPorFecha.forEach {
+            println(it)
+        }
+
     }
 }

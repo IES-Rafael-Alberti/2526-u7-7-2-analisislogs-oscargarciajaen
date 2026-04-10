@@ -1,13 +1,13 @@
 package org.iesra.Dominio
 
-import org.iesra.Presentacion.Consola
+import java.io.File
 import java.time.LocalDateTime
 
 class ProcesadorDeLogs() {
 
-    val consola = Consola()
-
     val logs = FileManager.logs
+
+    val informeLog = mutableMapOf<String, String>()
 
     fun contadorEntradas(): Int {
         var entradas = 0
@@ -90,26 +90,43 @@ class ProcesadorDeLogs() {
         return ulimaEntrada
     }
 
-    fun generarAnalisis(){
-        val entradas = contadorEntradas()
-        val info = contarInfo()
-        val errores = contarError()
-        val warnings = contarWarning()
-        val primeraEntrada = obtenerPrimeraEntrada()
-        val ultimaEntrdada = obtenerUltimaEntrada()
-        consola.mostrarAnalisis(entradas, info, errores, warnings, primeraEntrada, ultimaEntrdada)
-    }
-
     fun filtrarPorNivel(listaNiveles: MutableList<String>):MutableList<String>{
         val logsFiltradosPorNivel = mutableListOf<String>()
-        for (i in logs){
-            val log = i.split(" ")
-            if (log[2] in listaNiveles){
-                logsFiltradosPorNivel.add(i)
+
+        for (linea in logs) {
+            val partes = linea.split(" ")
+            if (partes.size > 3) {
+                val nivelEnLog = partes[4]
+
+                if (nivelEnLog in listaNiveles) {
+                    logsFiltradosPorNivel.add(linea)
+                }
             }
         }
         return logsFiltradosPorNivel
     }
+
+    fun generarInformeCompleto():MutableMap<String, String>{
+        informeLog["primerLog"] = obtenerPrimeraEntrada()
+        informeLog["ultimoLog"] = obtenerUltimaEntrada()
+        informeLog["nivelesIncluidos"] = "INFO,WARNING,ERROR"
+        informeLog["lineasProcesadas"] = contadorEntradas().toString()
+        informeLog["INFO"] = contarInfo().toString()
+        informeLog["WARNING"] = contarWarning().toString()
+        informeLog["ERROR"] = contarError().toString()
+        return informeLog
+    }
+
+    fun generarStats():MutableMap<String, String>{
+        informeLog["lineasProcesadas"] = contadorEntradas().toString()
+        informeLog["INFO"] = contarInfo().toString()
+        informeLog["WARNING"] = contarWarning().toString()
+        informeLog["ERROR"] = contarError().toString()
+        return informeLog
+    }
+
+
+
 
 
 

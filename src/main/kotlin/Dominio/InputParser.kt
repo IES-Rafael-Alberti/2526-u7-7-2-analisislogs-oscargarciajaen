@@ -4,7 +4,7 @@ import org.iesra.Presentacion.Consola
 import java.time.LocalDateTime
 import kotlin.*
 
-object InputParser {
+class InputParser {
 
     val consola: Consola = Consola()
 
@@ -16,7 +16,7 @@ object InputParser {
         while (i < args.size){
             when(args[i]){
                 "-i" , "--input"  -> {
-                    validarImput(args)
+                    validarImput(args[i++])
                     i++
                 }
                 "-f", "--from" -> {
@@ -46,9 +46,6 @@ object InputParser {
                 "-p", "--stdout" -> {
                     conf.mostrarConsola = true
                 }
-                "--ignore-invalid" -> {
-                    conf.ingnoreInvalid = true
-                }
                 "-h", "--help" -> {
                     consola.mostrarAyuda()
                 }
@@ -60,17 +57,14 @@ object InputParser {
 
     }
 
-    fun validarImput(args: Array<String>): Boolean{
-        var valido = false
-        if(args.size == 2){
-            valido = true
-            FileManager.ObtenerLogs(args[1])
-        }
-        return valido
+
+    fun validarImput(ruta: String): Boolean {
+        FileManager.ObtenerLogs(ruta)
+        return true
     }
 
     fun validarFrom(fecha: String): LocalDateTime{
-        val regex = """^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])\\s([01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d$""".toRegex()
+        val regex = """^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])\s([01]\d|2[0-3]):[0-5]\d:[0-5]\d$""".toRegex()
         val fechaFormateada = fecha.replace("\"", "")
         if (fechaFormateada.matches(regex)){
             val fechaValidada = LocalDateTime.parse(fechaFormateada)
@@ -81,7 +75,7 @@ object InputParser {
     }
 
     fun validarTo(fecha: String): LocalDateTime{
-        val regex = """^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])\\s([01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d$""".toRegex()
+        val regex = """^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])\s([01]\d|2[0-3]):[0-5]\d:[0-5]\d$""".toRegex()
         val fechaFormateada = fecha.replace("\"", "")
         if (fechaFormateada.matches(regex)){
             val fechaValidada = LocalDateTime.parse(fechaFormateada)
