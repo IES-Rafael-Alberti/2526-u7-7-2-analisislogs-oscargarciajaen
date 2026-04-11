@@ -16,7 +16,7 @@ class InputParser {
         while (i < args.size){
             when(args[i]){
                 "-i" , "--input"  -> {
-                    validarImput(args[i++])
+                    validarImput(args[i +1])
                     i++
                 }
                 "-f", "--from" -> {
