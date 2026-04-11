@@ -87,17 +87,12 @@ class ProcesadorDeLogs() {
         return ulimaEntrada
     }
 
-    fun filtrarPorNivel(listaNiveles: MutableList<String>):MutableList<String>{
+    fun filtrarPorNivel(listaNiveles: MutableList<String>): MutableList<String> {
         val logsFiltradosPorNivel = mutableListOf<String>()
 
-        for (linea in logs) {
-            val partes = linea.split(" ")
-            if (partes.size > 3) {
-                val nivelEnLog = partes[4]
-
-                if (nivelEnLog in listaNiveles) {
-                    logsFiltradosPorNivel.add(linea)
-                }
+        for (log in logs) {
+            if (listaNiveles.any { nivel -> log.contains(nivel) }) {
+                logsFiltradosPorNivel.add(log)
             }
         }
         return logsFiltradosPorNivel
