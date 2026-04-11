@@ -17,14 +17,13 @@ class ProcesadorDeLogs() {
         return entradas
     }
 
-    fun filtrarPorFecha(desde: LocalDateTime?, hasta: LocalDateTime?): MutableList<String>{
+    fun filtrarPorFecha(desde: String?, hasta: String?): MutableList<String>{
         val logsFiltrados: MutableList<String> = mutableListOf()
-        if (desde != null && hasta != null && desde.isBefore(hasta)){
+        if (desde != null && hasta != null && desde < hasta){
             for (log in logs){
                 val logDividido = log.split("]")
                 val fechaLog = logDividido[0].replace("[", "")
-                val fechaYHora = LocalDateTime.parse(fechaLog)
-                if (desde <= fechaYHora && fechaYHora <= hasta){
+                if (desde <= fechaLog && fechaLog <= hasta){
                     logsFiltrados.add(log)
                 }
             }
@@ -32,8 +31,7 @@ class ProcesadorDeLogs() {
             for (log in logs){
                 val logDividido = log.split("]")
                 val fechaLog = logDividido[0].replace("[", "")
-                val fechaYHora = LocalDateTime.parse(fechaLog)
-                if (fechaYHora <= hasta){
+                if (fechaLog <= hasta){
                     logsFiltrados.add(log)
                 }
             }
@@ -41,8 +39,7 @@ class ProcesadorDeLogs() {
             for (log in logs){
                 val logDividido = log.split("]")
                 val fechaLog = logDividido[0].replace("[", "")
-                val fechaYHora = LocalDateTime.parse(fechaLog)
-                if (desde <= fechaYHora){
+                if (desde <= fechaLog){
                     logsFiltrados.add(log)
                 }
             }

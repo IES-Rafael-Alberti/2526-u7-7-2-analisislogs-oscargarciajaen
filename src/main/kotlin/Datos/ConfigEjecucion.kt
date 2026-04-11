@@ -3,8 +3,8 @@ package org.iesra.Datos
 import java.time.LocalDateTime
 
 data class ConfigEjecucion(
-    var dateFrom: LocalDateTime? = null,
-    var dateTo: LocalDateTime? = null,
+    var dateFrom: String? = null,
+    var dateTo: String? = null,
     var levels: MutableList<String>? = null,
     var report: Boolean? = null,
     var stats: Boolean? = null,

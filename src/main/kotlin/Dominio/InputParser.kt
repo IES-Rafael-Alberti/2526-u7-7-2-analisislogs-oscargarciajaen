@@ -63,23 +63,19 @@ class InputParser {
         return true
     }
 
-    fun validarFrom(fecha: String): LocalDateTime{
+    fun validarFrom(fecha: String): String{
         val regex = """^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])\s([01]\d|2[0-3]):[0-5]\d:[0-5]\d$""".toRegex()
-        val fechaFormateada = fecha.replace("\"", "")
-        if (fechaFormateada.matches(regex)){
-            val fechaValidada = LocalDateTime.parse(fechaFormateada)
-            return fechaValidada
+        if (fecha.matches(regex)){
+            return fecha
         } else {
             throw IllegalArgumentException("-f, --from <fechaHora>         Formato: \"YYYY-MM-DD HH:MM:SS")
         }
     }
 
-    fun validarTo(fecha: String): LocalDateTime{
+    fun validarTo(fecha: String): String{
         val regex = """^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])\s([01]\d|2[0-3]):[0-5]\d:[0-5]\d$""".toRegex()
-        val fechaFormateada = fecha.replace("\"", "")
-        if (fechaFormateada.matches(regex)){
-            val fechaValidada = LocalDateTime.parse(fechaFormateada)
-            return fechaValidada
+        if (fecha.matches(regex)){
+            return fecha
         } else {
             throw IllegalArgumentException("-t, --to <fechaHora>         Formato: \"YYYY-MM-DD HH:MM:SS")
         }
